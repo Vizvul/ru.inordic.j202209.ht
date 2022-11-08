@@ -9,4 +9,6 @@ public interface LinkedList {
     boolean removeFirstByValue(int value);
     boolean contains(int value);
     int get(int position);
+    void print();
+    int getPosition(int value);
 }

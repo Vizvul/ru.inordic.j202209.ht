@@ -1,55 +1,56 @@
 package ru.inordic.j202209.ht.lesson08;
 
 public class SimplyLinkedList implements LinkedList {
+    private IntLinkList second;
     private IntLinkList start;
 
     public SimplyLinkedList() {
         start = null;
     }
 
-    public boolean isEmpty() {
-        return start == null;
-    }
-
     @Override
     public int size() {
+        IntLinkList size = start;
         int result = 0;
-
-        if (!isEmpty()){
-            IntLinkList size = start;
-            while (size != null) {
+        while (size != null) {
                 result++;
-                size = size.positionLink;
-        }
+                size = size.getPositionLink();
         }
         return result;
-    }
+        }
+
 
     @Override
-    public void add (int value){
-
+    public void add (int value) {
         IntLinkList addNewValue = new IntLinkList(value);
-        addNewValue.positionLink = start;
-        start = addNewValue;
-
+        addNewValue.setPositionLink(null);
+        if (start == null) {
+            start = addNewValue;
+        } else {
+            second.setPositionLink(addNewValue);
+        }
+        second = addNewValue;
     }
 
     @Override
     public void add (int value, int position) {
             add(value);
             IntLinkList addNewPozition = start;
+            int nextValue = 0;
 
-            if (size() == position+1) { return; }
-            int i = size();
-
+            if (size() <= position) { return; }
+            int i = 0;
             while (addNewPozition != null ) {
-                i--;
-                if (i + 1 > position) {
-                    addNewPozition.value = get(i);
-                } else if (i + 1 == position){
-                    addNewPozition.value = value;
+                i++;
+                if (i > position) {
+                    value = addNewPozition.getValue();
+                    addNewPozition.setValue(nextValue);
+                    position = i+1;
+                } else if (i == position){
+                    nextValue = addNewPozition.getValue();
+                    addNewPozition.setValue(value);
                 }
-                addNewPozition = addNewPozition.positionLink;
+                addNewPozition = addNewPozition.getPositionLink();
             }
         }
 
@@ -63,15 +64,16 @@ public class SimplyLinkedList implements LinkedList {
             add(value,position);
         }
 
+        @Override
         public int getPosition (int value) {
         IntLinkList getPosition = start;
-        int k = size();
+        int k = 0;
         while (getPosition != null) {
-            k--;
-            if (getPosition.value == value){
-                return k + 1;
+            k++;
+            if (getPosition.getValue() == value){
+                return k;
             }
-            getPosition = getPosition.positionLink;
+            getPosition = getPosition.getPositionLink();
         }
         return 0;
         }
@@ -80,20 +82,20 @@ public class SimplyLinkedList implements LinkedList {
         public void removeByIndex ( int position) {
             IntLinkList removeByIndex = start;
             IntLinkList back = null;
-            int j = size();
+            int j = 0;
 
-            while (removeByIndex.positionLink != null) {
-                j--;
-                if (j+1 == position) {
-                    back.positionLink = removeByIndex.positionLink;
+            while (removeByIndex.getPositionLink() != null) {
+                j++;
+                if (j == position) {
+                    back.setPositionLink(removeByIndex.getPositionLink());
                 }
                     back = removeByIndex;
-                    removeByIndex = removeByIndex.positionLink;
+                    removeByIndex = removeByIndex.getPositionLink();
                 }
         }
 
         @Override
-        public boolean removeFirstByValue ( int value){
+        public boolean removeFirstByValue (int value){
             IntLinkList contains;
             if (get(1) == value){
                 return true;
@@ -105,9 +107,9 @@ public class SimplyLinkedList implements LinkedList {
         public boolean contains ( int value){
             IntLinkList contains = start;
             while (contains != null){
-                if (contains.value == value) {
+                if (contains.getValue() == value) {
                     return true;
-                } else { contains = contains.positionLink;}
+                } else { contains = contains.getPositionLink();}
             }
             return false;
         }
@@ -115,26 +117,27 @@ public class SimplyLinkedList implements LinkedList {
         @Override
         public int get (int position){
             IntLinkList getNewPozition = start;
-            int t = size();
+            int t = 0;
             while (getNewPozition != null) {
-                t--;
-                if ( (t+1) == position) {
-                    return getNewPozition.value;
+                t++;
+                if (t == position) {
+                    return getNewPozition.getValue();
                 } else {
-                    getNewPozition = getNewPozition.positionLink;
+                    getNewPozition = getNewPozition.getPositionLink();
                 }
             }
             return 0;
         }
 
-        public void print () {
+        @Override
+        public void print() {
             IntLinkList test = start;
-            int j = size();
-
+            int j = 0;
             while (test != null) {
-                j--;
-                System.out.println(j + 1 + " element = " + test.positionLink + " - " + test.value);
-                test = test.positionLink;
+                j++;
+                System.out.println( j + " element = " + test.getPositionLink() + " - " + test.getValue());
+                test = test.getPositionLink();
             }
         }
+
     }
