@@ -15,7 +15,7 @@ public class Main {
         } else if (result > 0) {
             System.out.println("Разница двух чисел больше нуля и равна: " + result);
         } else {
-            System.out.println("Разница двух чисел равна нулю");
+            System.out.println("Разница двух чисел равна нулю! ");
         }
     }
 }
